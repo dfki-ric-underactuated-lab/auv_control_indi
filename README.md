@@ -67,6 +67,14 @@ Federal Ministry of Education and Research (grant no. 01IW22003) as well
 as the Federal Ministry of Economic Affairs and Climate Action (grant
 no. 03SX540D)
 
+<div align="center">
+  <img src="figures/bmwk.png" style="width:180px"> 
+  <img src="figures/bmbf.png" style="width:180px">
+  <br class=”blank” />
+  <img src="figures/dfki.svg" style="width:180px">
+  <img src="figures/ulab.gif" style="width:180px">
+</div>
+
 # License
 
 This work has been released under the BSD 3-Clause License. Details and terms

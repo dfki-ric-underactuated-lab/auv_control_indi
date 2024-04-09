@@ -1,0 +1,5 @@
+matplotlib
+numpy
+scipy
+drake==1.26.0
+pydrake==0.2.1

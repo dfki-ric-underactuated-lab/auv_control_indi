@@ -1,7 +1,7 @@
 <center>
 <h1>Attitude Control of the Hydrobatic Intervention AUV Cuttlefish using Incremental Nonlinear Dynamic Inversion</h1>
 <h3>Tom Slawik, Shubham Vyas, Leif Christensen, Frank Kirchner*</h3>
-<img src="figures/cover_picture.png">
+<img src="figures/animated_cuttlefish.gif">
 </center>
 *) All authors are affiliated with the German Research Center for Artificial
 Intelligence (DFKI GmbH), Robotics Innovation Center, Robert-Hooke-

@@ -7,6 +7,9 @@
 Intelligence (DFKI GmbH), Robotics Innovation Center, Robert-Hooke-
 Straße 1, 28359 Bremen, Germany. (e-mail: tom.slawik@dfki.de)
 
+***
+This repo contains the simulation models used in our paper [Attitude Control of the Hydrobatic Intervention AUV Cuttlefish using Incremental Nonlinear Dynamic Inversion](https://www.dfki.de/fileadmin/user_upload/import/15045_20240704_root.pdf), which was accepted to the 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2024).
+
 ## Abstract
 In this paper, we present an attitude control
 scheme for an autonomous underwater vehicle (AUV), which
@@ -83,3 +86,16 @@ do not publish third-party software, hence software packages from other
 developers are released under their very own terms and conditions. If you
 install third-party software packages along with this repo ensure  that you
 follow each individual license agreement.
+
+# Citation
+T. Slawik, S. Vyas, L. Christensen and F. Kirchner (2024). "Attitude Control of the Hydrobatic Intervention AUV Cuttlefish using Incremental Nonlinear Dynamic Inversion," in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2024), Abu Dhabi, UAE.
+
+```
+@inproceedings{SlawikIndi2024,
+    author = {Tom Slawik and Shubham Vyas and Leif Christensen and Frank Kirchner},
+    title = {Attitude Control of the Hydrobatic Intervention AUV Cuttlefish using Incremental Nonlinear Dynamic Inversion},
+    booktitle = {2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2024)},
+    year = {2024},
+    address = {Abu Dhabi, UAE}
+}
+```

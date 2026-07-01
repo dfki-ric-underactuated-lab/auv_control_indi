@@ -215,12 +215,3 @@ Dhabi, UAE.
 
 **INDI-QP:** *Publication details to be announced — citation will be added once the paper
 is published.*
-
-```bibtex
-@unpublished{SlawikIndiQP,
-    author = {Tom Vincent Slawik and Shubham Vyas and Bilal Wehbe and Leif Christensen and Frank Kirchner},
-    title  = {Prioritized Motion Control Robust to Actuator Failure for Hovering-Type AUVs using INDI-QP},
-    note   = {Manuscript, publication details to follow},
-    year   = {2025}
-}
-```

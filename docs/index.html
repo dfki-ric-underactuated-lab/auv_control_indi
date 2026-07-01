@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INDI &amp; INDI-QP Control for the Hydrobatic AUV Cuttlefish</title>
+  <meta name="description" content="Incremental Nonlinear Dynamic Inversion (INDI) and INDI-QP for attitude and fault-tolerant motion control of the hydrobatic intervention AUV Cuttlefish." />
+  <link rel="icon" href="static/figures/dfki.svg" />
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <nav class="nav">
+    <div class="container">
+      <span class="brand"></span>
+      <span class="links">
+        <a href="#indi">INDI</a>
+        <a href="#indi-qp">INDI-QP</a>
+        <a href="#code">Code</a>
+        <a href="#cite">Cite</a>
+        <a href="https://github.com/dfki-ric-underactuated-lab/auv_control_indi">GitHub</a>
+      </span>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <div class="container">
+      <h1>Incremental Nonlinear Dynamic Inversion<br />for the Hydrobatic Intervention AUV <em>Cuttlefish</em></h1>
+      <p class="tagline">Sensor-based attitude control (INDI) and prioritized, fault-tolerant motion control (INDI-QP) for 6-DOF underwater vehicles.</p>
+
+      <p class="authors">
+        Tom&nbsp;Slawik,
+        Shubham&nbsp;Vyas,
+        Bilal&nbsp;Wehbe,
+        Leif&nbsp;Christensen,
+        Frank&nbsp;Kirchner
+      </p>
+      <p class="affil">
+        German Research Center for Artificial Intelligence (DFKI GmbH),
+        Robotics Innovation Center, Robert-Hooke-Straße 1, 28359 Bremen, Germany
+      </p>
+      <p class="contact">Contact: <a href="mailto:tom.slawik@dfki.de">tom.slawik@dfki.de</a></p>
+
+      <div class="badges">
+        <a class="btn" href="https://github.com/dfki-ric-underactuated-lab/auv_control_indi">Code</a>
+        <a class="btn alt" href="#indi">INDI (IROS 2024)</a>
+        <a class="btn alt" href="#indi-qp">INDI-QP</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <section id="overview">
+    <div class="container">
+      <h2>Overview</h2>
+      <p>
+        Model-based controllers for marine vehicles depend on an accurate dynamic model,
+        which is hard to obtain because of strongly nonlinear hydrodynamic effects.
+        <strong>Incremental Nonlinear Dynamic Inversion (INDI)</strong> trades model
+        accuracy for sensor accuracy: it linearizes the system incrementally using
+        acceleration and actuator feedback, significantly reducing the modeling effort.
+      </p>
+      <p>
+        This repository accompanies two papers that bring INDI to the 6-DOF dual-arm
+        intervention AUV <em>Cuttlefish</em>. The first establishes INDI for hydrobatic
+        attitude control; the second, <strong>INDI-QP</strong>, builds directly on it by
+        adding a quadratic-program control allocation that prioritizes critical degrees of
+        freedom, enabling passive fault-tolerant control under thruster failure.
+      </p>
+
+      <div class="media-grid">
+        <figure>
+          <img src="static/figures/animated_cuttlefish.gif" alt="Cuttlefish performing a 90° pitch-up maneuver" />
+          <figcaption>INDI: 90° pitch-up maneuver (attitude control)</figcaption>
+        </figure>
+        <figure>
+          <img src="static/figures/cuttlefish_orbit.gif" alt="Cuttlefish performing a 360° orbit inspection" />
+          <figcaption>INDI-QP: 360° inspection orbit under thruster failure</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WORK 1: INDI ===================== -->
+  <section id="indi">
+    <div class="container">
+      <span class="work-tag">Work 1 · IROS 2024</span>
+      <h2>Attitude Control of the Hydrobatic Intervention AUV Cuttlefish<br/>using Incremental Nonlinear Dynamic Inversion</h2>
+      <p class="muted">Tom Slawik, Shubham Vyas, Leif Christensen, Frank Kirchner <br/>
+        2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2024), Abu Dhabi, UAE.</p>
+
+      <div class="badges" style="justify-content:flex-start;">
+        <a class="btn" href="https://www.dfki.de/fileadmin/user_upload/import/15045_20240704_root.pdf">Paper (PDF)</a>
+        <a class="btn alt" href="https://youtu.be/8u8k607lpn4">Video</a>
+      </div>
+
+      <h3>Abstract</h3>
+      <p>
+        We present an attitude control scheme for an autonomous underwater vehicle (AUV)
+        based on incremental nonlinear dynamic inversion (INDI). Conventional model-based
+        controllers depend on an exact model of the controlled system, which is difficult
+        to find, especially for marine vehicles subject to highly nonlinear hydrodynamic
+        effects. INDI trades off model accuracy with sensor accuracy by incorporating
+        acceleration feedback and actuator output feedback to linearize a nonlinear system
+        incrementally. Existing research primarily focuses on INDI for unmanned aerial
+        vehicles; there is barely any research on controlling marine vehicles using INDI.
+        The control task is a 90-degree pitch-up maneuver, where the dual-arm intervention
+        AUV <em>Cuttlefish</em> transitions from a horizontal traveling pose to a vertical
+        intervention pose. We compare INDI to a classical model-based control scheme in the
+        maritime test basin at DFKI RIC, Germany, and find that INDI keeps the AUV much more
+        steady both in the transitioning phase and in the station-keeping phase.
+      </p>
+
+      <div class="media-grid">
+        <div class="video-wrap yt-facade" data-id="8u8k607lpn4"
+             style="background-image:url('https://i.ytimg.com/vi/8u8k607lpn4/hqdefault.jpg')"
+             role="button" tabindex="0" aria-label="Play INDI attitude control video">
+          <span class="yt-play"></span>
+        </div>
+        <div>
+          <h3 style="margin-top:0;">Highlights</h3>
+          <ul class="highlights">
+            <li>First study of INDI for 6-DOF underwater motion control, derived on a Fossen model.</li>
+            <li>Quaternion-based attitude controller avoids gimbal lock during the 90° pitch-up.</li>
+            <li>Real-world experiments in the DFKI RIC maritime test basin.</li>
+            <li>Only a 6×6 mass-inertia matrix and an actuation model are required — minimal modeling effort.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WORK 2: INDI-QP ===================== -->
+  <section id="indi-qp">
+    <div class="container">
+      <span class="work-tag qp">Work 2 · builds on INDI</span>
+      <h2>Prioritized Motion Control Robust to Actuator Failure using INDI-QP</h2>
+      <p class="muted">Tom Vincent Slawik, Shubham Vyas, Bilal Wehbe, Leif Christensen, Frank Kirchner.</p>
+
+      <div class="badges" style="justify-content:flex-start;">
+        <a class="btn alt" href="https://youtu.be/50bc1D_jC-o">Video</a>
+      </div>
+
+      <h3>Abstract</h3>
+      <p>
+        INDI-QP extends Incremental Nonlinear Dynamic
+        Inversion (INDI) with a quadratic program to prioritize critical
+        degrees of freedom during actuator failure. While the algorithm
+        has gained significant attention within the aerial vehicle com-
+        munity, it has not yet been studied for underwater systems.
+        In this work, we adapt INDI-QP for the 6-DOF autonomous
+        underwater vehicle <em>Cuttlefish</em>, which is equipped with eight
+        thrusters and evaluate it on a 360 degrees inspection trajectory. To
+        generate the inspection motion, a circular motion controller
+        maintains a constant radius and attitude relative to a fixed object
+        while keeping the line of sight aligned with the sensor axis. Our
+        experiments show that, by prioritizing critical degrees of freedom,
+        the proposed INDI-QP controller safely executes the inspection
+        trajectory and maintains a significantly smaller line-of-sight off-
+        axis error than a non-prioritized INDI baseline, even with fewer
+        than six functional thrusters, at the cost of increased positional
+        tracking error. Passive fault-tolerant control is enabled without
+        thruster speed measurements by integrating a parallel thruster
+        model into the control architecture.
+      </p>
+
+      <div class="media-grid">
+        <div class="video-wrap yt-facade" data-id="50bc1D_jC-o"
+             style="background-image:url('https://i.ytimg.com/vi/50bc1D_jC-o/hqdefault.jpg')"
+             role="button" tabindex="0" aria-label="Play INDI-QP fault-tolerant control video">
+          <span class="yt-play"></span>
+        </div>
+        <div>
+          <h3 style="margin-top:0;">Highlights</h3>
+          <ul class="highlights">
+            <li>QP-based incremental control allocation prioritizes line-of-sight (roll/pitch) over rotation about the sensor axis.</li>
+            <li>Passive fault tolerance — no fault detection &amp; isolation and no RPM sensors required.</li>
+            <li>A parallel thruster model runs inside the control loop to compensate failures.</li>
+            <li>Completes the 360° inspection with as few as two functional thrusters by sacrificing yaw.</li>
+            <li>Validated in simulation across all failure combinations and in real-world experiments.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Prioritized fault tolerance</h3>
+      <p>
+        When the vehicle becomes underactuated, the diagonal cost matrix
+        <code>W<sub>x</sub></code> establishes a task hierarchy: roll and pitch
+        (line-of-sight alignment) are weighted far above yaw and translation, so the rotation
+        about the sensor axis is sacrificed first. The convex QP is solved online with OSQP
+        subject to actuator-rate limits.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== CODE ===================== -->
+  <section id="code">
+    <div class="container">
+      <h2>Code &amp; Reproduction</h2>
+      <p>
+        Both controllers are implemented in Python on top of
+        <a href="https://drake.mit.edu/">Drake</a>. Install Drake following the
+        <a href="https://drake.mit.edu/apt.html">official instructions</a>, then set up the
+        Python environment:
+      </p>
+      <pre><code>sudo apt update &amp;&amp; sudo apt install python3 python3-pip python3-venv
+
+python -m venv venv
+source venv/bin/activate
+
+pip3 install -r requirements.txt</code></pre>
+
+      <h3>INDI — attitude &amp; velocity control</h3>
+      <pre><code># Pose controller (INDI vs. model-based NDI)
+python3 examples/cuttlefish_pose_indi.py
+python3 examples/cuttlefish_pose_ndi.py
+
+# Velocity controller
+python3 examples/cuttlefish_velocity_indi.py
+python3 examples/cuttlefish_velocity_ndi.py</code></pre>
+
+      <h3>INDI-QP — 360° orbit inspection</h3>
+      <p>
+        The easiest way to explore INDI-QP is the real-time desktop GUI (requires
+        <code>PySide6</code>, <code>pyvista</code>, <code>pyvistaqt</code>):
+      </p>
+      <pre><code>python3 start_interactive_sim.py</code></pre>
+      <figure>
+        <img src="static/figures/screenshot.png" alt="Interactive INDI-QP orbit-inspection GUI" />
+        <figcaption>Interactive orbit-inspection demo — fail thrusters live and watch INDI-QP reallocate control effort.</figcaption>
+      </figure>
+      <p>
+        Click the thruster buttons (lower right) to fail or restore a thruster on the fly
+        (<strong>green = enabled, red = failed</strong>). The configuration panel adjusts the
+        orbit (radius, altitude, tangential velocity, target position) and accelerometer noise;
+        the toolbar has Pause and Reset; and the live plots show the tracking,
+        line-of-sight, and tangential-velocity errors.
+      </p>
+
+      <h4>Scripted runs</h4>
+      <pre><code># Orbit controller (INDI-QP vs. model-based)
+python3 examples/cuttlefish_orbit_indi_qp.py
+python3 examples/cuttlefish_orbit_ndi_qp.py</code></pre>
+      <p>
+        Each script has a parameter section for initial conditions, setpoints, controller
+        gains, filtering, and sensor noise. In the orbit scripts, set
+        <code>thruster_configuration</code> (entries 0–7) to <code>0</code> to disable a
+        thruster after <code>t_fail</code> and reproduce a failure scenario.
+      </p>
+
+      <table>
+        <thead><tr><th>Index</th><th>Thruster</th><th>Index</th><th>Thruster</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>Vertical front left</td><td>4</td><td>Horizontal front left</td></tr>
+          <tr><td>1</td><td>Vertical front right</td><td>5</td><td>Horizontal front right</td></tr>
+          <tr><td>2</td><td>Vertical tail right</td><td>6</td><td>Horizontal tail right</td></tr>
+          <tr><td>3</td><td>Vertical tail left</td><td>7</td><td>Horizontal tail left</td></tr>
+        </tbody>
+      </table>
+
+      <p class="muted">
+        Motion models live in <code>models/cuttlefish/</code>
+        (<code>cuttlefish_linear_model.yml</code>, <code>cuttlefish_quadratic_model.yml</code>),
+        identified with linear and linear-quadratic drag models.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== CITE ===================== -->
+  <section id="cite" class="bibtex">
+    <div class="container">
+      <h2>Citation</h2>
+
+      <h3>INDI (IROS 2024)</h3>
+      <pre><code>@inproceedings{SlawikIndi2024,
+  author    = {Tom Slawik and Shubham Vyas and Leif Christensen and Frank Kirchner},
+  title     = {Attitude Control of the Hydrobatic Intervention AUV Cuttlefish
+               using Incremental Nonlinear Dynamic Inversion},
+  booktitle = {2024 IEEE/RSJ International Conference on Intelligent Robots
+               and Systems (IROS 2024)},
+  year      = {2024},
+  address   = {Abu Dhabi, UAE}
+}</code></pre>
+
+      <h3>INDI-QP</h3>
+      <p class="muted">Publication details to be announced — citation will be added once the paper is published.</p>
+      <pre><code>@unpublished{SlawikIndiQP,
+  author = {Tom Vincent Slawik and Shubham Vyas and Bilal Wehbe and
+            Leif Christensen and Frank Kirchner},
+  title  = {Prioritized Motion Control Robust to Actuator Failure for
+            Hovering-Type AUVs using INDI-QP},
+  note   = {Manuscript, publication details to follow},
+  year   = {2025}
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ===================== ACK ===================== -->
+  <section id="ack" class="tight">
+    <div class="container center">
+      <h2>Acknowledgements</h2>
+      <p class="muted">
+        Funded by the German Federal Ministry of Education and Research (grant no. 01IW22003)
+        and the Federal Ministry of Economic Affairs and Climate Action (grant no. 03SX540D).
+      </p>
+      <div class="logos">
+        <img src="static/figures/bmwk.png" alt="BMWK" />
+        <img src="static/figures/bmbf.png" alt="BMBF" />
+        <img src="static/figures/dfki.svg" alt="DFKI" />
+        <img src="static/figures/ulab.gif" alt="DFKI RIC Underactuated Lab" />
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      Released under the BSD 3-Clause License ·
+      <a href="https://github.com/dfki-ric-underactuated-lab/auv_control_indi">dfki-ric-underactuated-lab/auv_control_indi</a>
+    </div>
+  </footer>
+
+  <script>
+    // Click-to-load YouTube facade: avoids "Error 153" on file:// previews
+    // and keeps the page light. The real iframe is injected only on demand.
+    function loadYouTube(el) {
+      var id = el.getAttribute('data-id');
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      iframe.title = 'YouTube video player';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      el.innerHTML = '';
+      el.classList.remove('yt-facade');
+      el.removeAttribute('style');
+      el.appendChild(iframe);
+    }
+    document.querySelectorAll('.yt-facade').forEach(function (el) {
+      el.addEventListener('click', function () { loadYouTube(el); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadYouTube(el); }
+      });
+    });
+  </script>
+
+</body>
+</html>

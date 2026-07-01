@@ -1,5 +1,11 @@
 matplotlib
 numpy
+pandas
 scipy
-drake==1.26.0
-pydrake==0.2.1
+transforms3d
+cvxpy
+drake
+pydrake
+PySide6
+pyvista
+pyvistaqt

@@ -1,18 +1,110 @@
-import matplotlib.pyplot as plt
-from scipy.spatial.transform import Rotation
+##
+# @file
+# @brief 3D rigid-body trajectory visualization (static plot, slider, animation).
 
-from .common import *
+import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
-from .common import RigidBodyState
+import matplotlib.animation as animation
 
+from .common import quat2rot, quat2rpy_array
+
+
+def _compute_workspace(pos, zdown=False):
+    '''@brief Auto-compute a cubic 3D view volume as [min, max] pairs per axis.'''
+    limits = [np.min(pos, axis=0), np.max(pos, axis=0)]
+    ranges = limits[1] - limits[0]
+    middle = 0.5 * (limits[1] + limits[0])
+    max_range = max(np.max(ranges), 1)  # minimum window size of 1
+
+    workspace = []
+    for i in range(3):
+        lim = middle[i] + np.array([-1.0, 1.0]) * max_range / 2.0
+        if i != 0 and zdown:
+            # flip y and z axes s.t. z points downwards
+            lim = np.flip(lim)
+        workspace.append(lim)
+    return workspace
+
+
+def plot_gif(sample_times, state_trajectory, input_trajectory, workspace=None, ori_plot='quaternion', quat_reference=None):
+    '''@brief Animate the vehicle pose along a trajectory (returns a FuncAnimation).'''
+    zdown = False
+
+    spc = 0.05 # spacing between axes
+    graph_w = 0.25
+    graph_h = 0.4
+    slider_thickness = 0.03
+    fig = plt.figure('6 DoF Rigid Body Visualization', (8, 8))
+    ax_3d = fig.add_axes([0.0, 0.0, 1.0, 1.0], projection='3d')
+
+    # # Extract Data
+
+    t = sample_times
+    val = state_trajectory
+
+    pos  = val[:,0:3]
+    ori  = val[:,3:7]
+    vlin = val[:,7:10]
+    vang = val[:,10:13]
+
+    # # Plot position in 3d
+
+    ax_3d.plot3D(pos[:,0], pos[:,1], pos[:,2], color=[0.3, 0.3, 0.3])
+
+    # Determine axes limits for 3d Plot
+    ax_3d_limits = [np.min(pos,axis=0), np.max(pos,axis=0)]
+    ax_3d_xyz_ranges = ax_3d_limits[1] - ax_3d_limits[0]
+    ax_3d_xyz_middle = 0.5 * (ax_3d_limits[1] + ax_3d_limits[0])
+    ax_3d_max_range = np.max(ax_3d_xyz_ranges)
+    ax_3d_max_range = max(ax_3d_max_range, 1) # set minimum window size to 1
+
+    if workspace is None:
+        workspace = _compute_workspace(pos, zdown)
+
+    # set limits
+    ax_3d.set_xlim(workspace[0][0], workspace[0][1])
+    ax_3d.set_ylim(workspace[1][0], workspace[1][1])
+    ax_3d.set_zlim(workspace[2][0], workspace[2][1])
+    ax_3d.set_xlabel('x')
+    ax_3d.set_ylabel('y')
+    ax_3d.set_zlabel('z')
+
+    # plot coordinate system at initial pose
+    pose_0 = np.hstack((pos[0,:], ori[0,:]))
+    #pose_marker = Cartesian3d(pose_0, ax_3d, length=(ax_3d_max_range)/5)
+    pose_marker = Cartesian3d(pose_0, ax_3d, length=1.5)
+
+
+    def update(val):
+
+        timestamp = val
+        idx = np.argmin(np.abs(t - timestamp))
+
+        pose_0 = np.hstack((pos[idx,:], ori[idx,:]))
+        pose_marker.redraw(pose_0)
+
+        fig.canvas.draw_idle()
+
+
+    update(0)
+
+    return animation.FuncAnimation(fig, update, repeat=True, frames=np.floor(t[-1]-t[0]).astype(int) - 1, interval=50)
 
 class RigidBodyTrajectoryPlot:
+    ## @brief Static 3D pose plot plus 2D wrench/orientation/velocity graphs with a
+    #  time slider marker.
     def __init__(self, sample_times, state_trajectory, input_trajectory, workspace=None, ori_plot='quaternion', quat_reference=None):
+        '''@brief Build the figure from a logged state and wrench trajectory.
+
+        @param workspace Optional list of [min, max] pairs per axis; auto-computed if None.
+        @param ori_plot 'quaternion' or 'euler' orientation subplot.
+        @param quat_reference Optional reference-orientation trajectory to overlay.
+        '''
         zdown = False
-        
+
         spc = 0.05 # spacing between axes
         graph_w = 0.25
         graph_h = 0.4
@@ -50,35 +142,19 @@ class RigidBodyTrajectoryPlot:
         ax_3d_max_range = max(ax_3d_max_range, 1) # set minimum window size to 1
 
         if workspace is None:
-            workspace = []
-            for i in range(3):
-                b = np.array([-1, 1])
-                lim = ax_3d_xyz_middle[i] + b * ax_3d_max_range/2
-                if i != 0 and zdown:
-                    # flip y and z axes s.t. z points downwards
-                    lim = np.flip(lim)
-                workspace.append(lim)
-            
-            # z=0.0 is the water plane
-            #workspace[2][1] = 0.0
+            workspace = _compute_workspace(pos, zdown)
 
-
-        # set limits
-        ax_3d.set_xlim(-workspace[0], workspace[0]);
-        ax_3d.set_ylim(-workspace[1], workspace[1])
-        ax_3d.set_zlim(-workspace[2], 0)
-        ax_3d.set_xlabel('x'); ax_3d.set_ylabel('y'); ax_3d.set_zlabel('z')
-
-        # # Plot graphs
-        # lines = ax_pos.plot(t, pos)
-        # ax_pos.legend(lines, ['x', 'y', 'z'], loc="upper right")
-        # ax_pos.set_ylabel('position [m]')
-        # ax_pos.set_ylim(-10,10)
+        # set limits (workspace is a list of [min, max] pairs per axis)
+        ax_3d.set_xlim(workspace[0][0], workspace[0][1])
+        ax_3d.set_ylim(workspace[1][0], workspace[1][1])
+        ax_3d.set_zlim(workspace[2][0], workspace[2][1])
+        ax_3d.set_xlabel('x')
+        ax_3d.set_ylabel('y')
+        ax_3d.set_zlabel('z')
 
         lines = ax_pos.plot(t, input_trajectory)
         ax_pos.legend(lines, ['X', 'Y', 'Z', 'K', 'M', 'N'], loc="upper right")
         ax_pos.set_ylabel('Wrench [N and Nm]')
-        #ax_pos.set_ylim(-100,100)
 
         if ori_plot=='quaternion':
             lines = ax_ori.plot(t, ori[:,0], color='r', label='qx')
@@ -94,7 +170,7 @@ class RigidBodyTrajectoryPlot:
             ax_ori.legend(loc="upper right")
             ax_ori.set_ylabel('quaternions')
         elif ori_plot == 'euler':
-            #ori_rpy = quat2rpy_array("xyz", ori, True)
+            ori_rpy = quat2rpy_array("xyz", ori, True)
             lines = ax_ori.plot(t, ori_rpy)
             ax_ori.legend(lines, ['r', 'p', 'y'], loc="upper right")
             ax_ori.set_ylabel('euler angles [deg.]')
@@ -109,30 +185,22 @@ class RigidBodyTrajectoryPlot:
         ax_vang.set_ylabel('ang. vel. [rad/s]')
         ax_vang.set_ylim(-0.3, +0.3)
 
-        # # Interactive
-
-        # add slider
+        # Time slider that scrubs the pose marker and the graph cursors.
         global t_slider
         t_slider = Slider(ax_slider, 'time', t[0], t[-1],
                           valinit=t[0],
                           valstep=(t[-1]-t[0])/1000.0 )
 
-        # plot coordinate system at initial pose
         pose_0 = np.hstack((pos[0,:], ori[0,:]))
-        #pose_marker = Cartesian3d(pose_0, ax_3d, length=(ax_3d_max_range)/5)
         pose_marker = Cartesian3d(pose_0, ax_3d, length=1.5)
 
-        # add graph marker
         graph_marker = []
-        marker_axes_list = []
-        marker_axes_list.extend([ax_pos, ax_ori, ax_vlin, ax_vang])
-        #marker_axes_list.extend(add_marker_axes)
+        marker_axes_list = [ax_pos, ax_ori, ax_vlin, ax_vang]
         for ax in marker_axes_list:
             l = ax.axvline(0, color='k', linestyle='--')
             graph_marker.append(l)
 
         def update(val):
-
             timestamp = t_slider.val
             idx = np.argmin(np.abs(t - timestamp))
 
@@ -147,16 +215,15 @@ class RigidBodyTrajectoryPlot:
 
         t_slider.on_changed(update)
 
-#############################
-# RIGID BODY PLOTTING
-#############################
 
 class Arrow3D(FancyArrowPatch):
+    ## @brief A 3D arrow patch for matplotlib mplot3d axes.
     def __init__(self, xs, ys, zs, *args, **kwargs):
         super().__init__((0,0), (0,0), *args, **kwargs)
         self._verts3d = xs, ys, zs
 
     def do_3d_projection(self, renderer=None):
+        '''@brief Project the 3D endpoints to 2D; returns depth for z-ordering.'''
         xs3d, ys3d, zs3d = self._verts3d
         xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, self.axes.M)
         self.set_positions((xs[0],ys[0]),(xs[1],ys[1]))
@@ -164,7 +231,9 @@ class Arrow3D(FancyArrowPatch):
         return np.min(zs)
 
 class Cartesian3d:
+    ## @brief A drawable body coordinate triad (RGB = x, y, z axes) at a pose.
     def __init__(self, pose, ax, length=1, alpha=1):
+        '''@brief Draw the triad for @p pose [pos(3), quat(4)] on axes @p ax.'''
         self.length = length
         self.ax = ax
 
@@ -193,6 +262,7 @@ class Cartesian3d:
 
 
     def redraw(self, pose):
+        '''@brief Move the triad to a new pose [pos(3), quat(4)].'''
         origin = pose[0:3]
         rot_ib = quat2rot(pose[3:7])
 

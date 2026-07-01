@@ -1,0 +1,256 @@
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f6f8fa;
+  --text: #1b1f24;
+  --muted: #5b6570;
+  --accent: #0a6cff;
+  --accent-dark: #0850c4;
+  --border: #e4e8ec;
+  --max: 980px;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, "Noto Sans", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.65;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-dark); text-decoration: underline; }
+
+.container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- Top nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.nav .brand { font-weight: 700; letter-spacing: -0.01em; }
+.nav .links a {
+  margin-left: 20px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+.nav .links a:hover { color: var(--accent); text-decoration: none; }
+@media (max-width: 640px) { .nav .links { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 56px 0 36px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #ffffff 0%, var(--bg-alt) 100%);
+}
+.hero h1 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.hero .tagline { color: var(--muted); font-size: 1.05rem; margin: 0 0 22px; }
+.authors { font-size: 1.05rem; margin: 6px 0; }
+.authors a { font-weight: 600; }
+.affil { color: var(--muted); font-size: 0.92rem; max-width: 720px; margin: 8px auto 0; }
+.contact { color: var(--muted); font-size: 0.92rem; margin: 6px auto 0; }
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 26px 0 4px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #1b1f24;
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: 1px solid #1b1f24;
+  transition: transform 0.05s ease, background 0.15s ease;
+}
+.btn:hover { background: #000; text-decoration: none; transform: translateY(-1px); }
+.btn.alt { background: #fff; color: var(--text) !important; border-color: var(--border); }
+.btn.alt:hover { background: var(--bg-alt); }
+
+/* ---------- Sections ---------- */
+section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+section.tight { padding: 40px 0; }
+h2 {
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+}
+h3 { font-size: 1.2rem; margin: 28px 0 10px; }
+p { margin: 0 0 16px; }
+.muted { color: var(--muted); }
+.center { text-align: center; }
+
+/* work header pill */
+.work-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  background: #e8f0ff;
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 12px;
+}
+.work-tag.qp { color: #7a3cc4; background: #f0e8ff; }
+
+figure { margin: 24px 0; text-align: center; }
+figure img { max-width: 100%; border-radius: var(--radius); border: 1px solid var(--border); }
+figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+
+.media-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+@media (max-width: 720px) { .media-grid { grid-template-columns: 1fr; } }
+
+.video-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* click-to-play YouTube facade */
+.yt-facade {
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  background-color: #000;
+}
+.yt-facade:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+  transition: background 0.15s ease;
+}
+.yt-facade:hover:after { background: rgba(0, 0, 0, 0.05); }
+.yt-facade:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.yt-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 14px;
+  z-index: 1;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.yt-facade:hover .yt-play { background: #ff0000; transform: translate(-50%, -50%) scale(1.04); }
+.yt-play:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent #ffffff;
+}
+
+/* highlights list */
+.highlights { list-style: none; padding: 0; margin: 16px 0; }
+.highlights li {
+  padding: 10px 0 10px 30px;
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+}
+.highlights li:before {
+  content: "▹";
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* code block */
+pre {
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+p code, li code, td code {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 0.86em;
+}
+
+/* table */
+table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.94rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+th { background: var(--bg-alt); font-weight: 600; }
+
+/* bibtex */
+.bibtex pre { background: var(--bg-alt); color: var(--text); border: 1px solid var(--border); }
+
+/* logos */
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+}
+.logos img { height: 56px; width: auto; }
+
+footer {
+  padding: 30px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+footer a { color: var(--muted); text-decoration: underline; }

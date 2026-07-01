@@ -7,9 +7,10 @@ import matplotlib.pyplot as plt
 from pydrake.systems.analysis import Simulator
 from pydrake.systems.framework import DiagramBuilder
 from pydrake.systems.primitives import LogVectorOutput, FirstOrderLowPassFilter, Adder, ConstantVectorSource
-from pydrake.systems.analysis import *
+from pydrake.systems.analysis import ResetIntegratorFromFlags
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from uwdrake.physics.motion_model import MotionModel
 from uwdrake.systems.underwater_vehicle import UnderwaterVehicle
 from uwdrake.controllers.ndi_twist_controller import NdiTwistController
@@ -17,7 +18,7 @@ from uwdrake.controllers.indi_twist_controller import IndiTwistController
 from uwdrake.controllers.pose_controller import PoseController
 from uwdrake.visualization import RigidBodyTrajectoryPlot
 from uwdrake.physics.propulsion_model import PropulsionModel
-from uwdrake.systems.propulsion import *
+from uwdrake.systems.propulsion import Propulsion
 from uwdrake.systems.modulated_vector_source import FlippingVectorSource
 from uwdrake.systems.random_vector_source import RandomVectorSource
 
@@ -102,11 +103,11 @@ thruster_model_path   = 'models/cuttlefish/cuttlefish_thrusters.yml'
 Load motion models 
 '''
 
-motion_model_simulation = MotionModel.FromYaml(os.path.join(os.path.dirname(__file__), '../', model_path_simulation))
-motion_model_controller = MotionModel.FromYaml(os.path.join(os.path.dirname(__file__), '../', model_path_controller))
-motion_model_controller.InjectNoise(motion_model_controller_randomize)
+motion_model_simulation = MotionModel.from_yaml(os.path.join(os.path.dirname(__file__), '../', model_path_simulation))
+motion_model_controller = MotionModel.from_yaml(os.path.join(os.path.dirname(__file__), '../', model_path_controller))
+motion_model_controller.inject_noise(motion_model_controller_randomize)
 
-propulsion_model = PropulsionModel.FromYaml(thruster_model_path)
+propulsion_model = PropulsionModel.from_yaml(thruster_model_path)
 motion_model_simulation.set_propulsion_model(propulsion_model)
 motion_model_controller.set_propulsion_model(propulsion_model)
 
@@ -204,6 +205,6 @@ input_log = input_logger.FindLog(context)
 state_log = state_logger.FindLog(context)
 ori_ref_log = ori_ref_logger.FindLog(context)
 
-workspace = [5, 5, 5]
+workspace = [[-5, 5], [-5, 5], [-5, 0]]
 plot = RigidBodyTrajectoryPlot(state_log.sample_times(), state_log.data().transpose(), input_log.data().transpose(), workspace, quat_reference=ori_ref_log.data().transpose())
 plt.show(block=True)

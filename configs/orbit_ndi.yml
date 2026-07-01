@@ -1,0 +1,51 @@
+# Orbit-inspection simulation config (NDI controller).
+# Persistent setup only; run duration and thruster faults live in the script.
+# Gains/weights are the diagonal of the (diagonal) gain matrices.
+
+controller_type: NDI           # INDI / NDI (+ *_FTC variants)
+enable_thruster_model: true    # feed modeled RPM (not noisy sensor RPM) to the controller
+sim_time_step: 0.005           # integrator step [s]
+
+# Initial state
+pos_0: [2.0, 0.0, -2.0]        # world position [m]
+vlin_0: [0.0, 0.0, 0.0]        # body linear velocity [m/s]
+vang_0: [0.0, 0.0, 0.0]        # body angular velocity [rad/s]
+rpm_0: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+observer_rotmat:               # observer/camera frame -> base link
+- [0.0, -1.0, 0.0]
+- [-1.0, 0.0, 0.0]
+- [0.0, 0.0, -1.0]
+target_position: [0.0, 0.0, -5.0]   # inspected point (world) [m]
+
+# Velocity controller (per-DOF: surge, sway, heave, roll, pitch, yaw)
+W_x: [100.0, 100.0, 100.0, 1000.0, 1000.0, 1.0]   # QP residual weights
+Kp: [1.0, 1.0, 1.0, 1.5, 2.0, 1.5]                # proportional gain
+Kd: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]                # derivative gain
+K_theta: [0.0, 0.0, 0.0, 0.0]                     # restoring-param adaptation gain (0 = off)
+filter_cutoff: 10.0                               # state/accel/RPM low-pass cutoff [Hz]
+
+# Pose (polar) controller
+K_polar: [0.3, 0.3, 0.3, 0.4, 0.3, 0.2]   # radius, azimuth, altitude, + attitude gains
+vlin_max: 0.6                             # linear velocity limit [m/s]
+vang_max: 0.2                             # angular velocity limit [rad/s]
+radius: 2.0                               # orbit radius [m]
+azimuth: 0.0                              # fixed azimuth [rad] (only if not continuous)
+altitude: 3.0                             # orbit altitude [m]
+continuous_motion: true                   # true = orbit; false = hold azimuth
+tangential_velocity: 0.1                  # orbit speed [m/s] (sign = direction)
+
+# Disturbances + sensor noise
+act_delay_steps: 20                                       # actuator delay [steps]
+acc_disturbance_mean: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+acc_disturbance_stddev: [0.02, 0.02, 0.02, 0.02, 0.02, 0.02]
+rpm_sensor_disturbance_mean: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+rpm_sensor_disturbance_stddev: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+# Models (repo-relative paths)
+model_path_simulation: models/cuttlefish/cuttlefish_linear_model.yml
+model_path_controller: models/cuttlefish/cuttlefish_linear_model.yml
+thruster_model_path: models/cuttlefish/cuttlefish_thrusters.yml
+thruster_model_model_path: models/cuttlefish/cuttlefish_thrusters_model.yml
+vehicle_mesh_path: models/cuttlefish/meshes/cuttlefish_base.ply
+motion_model_controller_randomize: 0.1   # controller-model mismatch (0 = perfect model)
+seed: 100                                # RNG seed for reproducibility

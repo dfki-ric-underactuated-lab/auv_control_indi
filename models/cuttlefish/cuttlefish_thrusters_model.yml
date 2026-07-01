@@ -18,10 +18,10 @@ thruster_names:
 - Horizontal Tail Right
 - Horizontal Tail Left
 
-thrust_coefficient:     0.00012693
-time_constant:          0.15
-max_acceleration:       20 # rev/s^2
-max_rpm:                1255
+thrust_coefficient: 0.00012693
+time_constant:      0.3
+max_acceleration:   20 # rev/s^2
+max_rpm:            1200
 moment_of_inertia:    0.0
 
 # Currently only used by QP control allocation

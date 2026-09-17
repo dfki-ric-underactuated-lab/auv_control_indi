@@ -205,13 +205,36 @@ Dhabi, UAE.
 
 ```bibtex
 @inproceedings{SlawikIndi2024,
-    author    = {Tom Slawik and Shubham Vyas and Leif Christensen and Frank Kirchner},
+    author    = {Slawik, Tom Vincent and Vyas, Shubham and Christensen, Leif and Kirchner, Frank},
     title     = {Attitude Control of the Hydrobatic Intervention AUV Cuttlefish using Incremental Nonlinear Dynamic Inversion},
     booktitle = {2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2024)},
     year      = {2024},
-    address   = {Abu Dhabi, UAE}
+    pages     = {781--786},
+    month     = oct,
+    address   = {Abu Dhabi, UAE},
+    publisher = {IEEE},
+    doi       = {10.1109/IROS58592.2024.10802674},
+    url       = {https://doi.org/10.1109/IROS58592.2024.10802674}
 }
 ```
 
-**INDI-QP:** *Publication details to be announced — citation will be added once the paper
-is published.*
+**INDI-QP (RA-L 2026):**
+
+T. V. Slawik, S. Vyas, B. Wehbe, L. Christensen and F. Kirchner (2026). "Prioritized
+Motion Control Robust to Actuator Failure for Hovering-Type AUVs Using INDI-QP," in IEEE
+Robotics and Automation Letters, vol. 11, no. 9, pp. 10481–10488, Sep. 2026.
+
+```bibtex
+@article{Slawik2026Prioritized,
+  author  = {Slawik, Tom Vincent and Vyas, Shubham and Wehbe, Bilal and Christensen, Leif and Kirchner, Frank},
+  title   = {Prioritized Motion Control Robust to Actuator Failure for Hovering-Type {AUVs} Using {INDI-QP}},
+  journal = {IEEE Robotics and Automation Letters},
+  year    = {2026},
+  volume  = {11},
+  number  = {9},
+  pages   = {10481--10488},
+  month   = sep,
+  doi     = {10.1109/LRA.2026.3711829},
+  url     = {https://doi.org/10.1109/LRA.2026.3711829}
+}
+```

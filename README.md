@@ -28,7 +28,7 @@ actuation model.
 | | Paper | Focus |
 |---|---|---|
 | **Work 1 — INDI** | *Attitude Control of the Hydrobatic Intervention AUV Cuttlefish using Incremental Nonlinear Dynamic Inversion* (IROS 2024) | Quaternion-based attitude control; 90° pitch-up maneuver |
-| **Work 2 — INDI-QP** | *Prioritized Motion Control Robust to Actuator Failure for Hovering-Type AUVs using INDI-QP* | Passive fault-tolerant control; 360° inspection orbit |
+| **Work 2 — INDI-QP** | *Prioritized Motion Control Robust to Actuator Failure for Hovering-Type AUVs Using INDI-QP* (RA-L 2026) | Passive fault-tolerant control; 360° inspection orbit |
 
 INDI-QP **builds directly on** the INDI controller from Work 1, adding a quadratic-program
 control allocation that prioritizes critical degrees of freedom under actuator failure.
@@ -50,11 +50,12 @@ vertical intervention pose. Compared to a classical model-based scheme in the ma
 test basin at DFKI RIC, INDI keeps the AUV much steadier both in the transitioning phase
 and in the station-keeping phase.
 
-## Work 2 — INDI-QP
+## Work 2 — INDI-QP (RA-L 2026)
 
-> **Prioritized Motion Control Robust to Actuator Failure for Hovering-Type AUVs using INDI-QP**
+> **Prioritized Motion Control Robust to Actuator Failure for Hovering-Type AUVs Using INDI-QP**
 > Tom Vincent Slawik, Shubham Vyas, Bilal Wehbe, Leif Christensen, Frank Kirchner
-> [🎬 Video](https://youtu.be/50bc1D_jC-o)
+> *IEEE Robotics and Automation Letters, vol. 11, no. 9, pp. 10481–10488, Sep. 2026.*
+> [📄 Paper](https://doi.org/10.1109/LRA.2026.3711829) · [🎬 Video](https://youtu.be/50bc1D_jC-o)
 
 INDI-QP extends INDI with a quadratic program to prioritize critical degrees of freedom
 during actuator failure. We adapt it for the 6-DOF, eight-thruster Cuttlefish and evaluate
@@ -70,15 +71,13 @@ and isolation required.
 
 ## Simulation
 
-For running the simulation, [Drake](https://drake.mit.edu/) is required. Install Drake
-according to <https://drake.mit.edu/apt.html>.
-
-Then install the required Python packages:
+The simulation requires [Drake](https://drake.mit.edu/), which is installed from PyPI
+together with the other Python dependencies:
 
 ```bash
 sudo apt update && sudo apt install python3 python3-pip python3-venv
 
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 
 pip3 install -r requirements.txt
@@ -172,21 +171,21 @@ A combined project page for both works is published via GitHub Pages and built f
 
 <https://dfki-ric-underactuated-lab.github.io/auv_control_indi/>
 
-# Acknowledgements
+## Acknowledgements
 
 The work described in these papers has received funding by the German Federal Ministry of
 Education and Research (grant no. 01IW22003) as well as the Federal Ministry of Economic
 Affairs and Climate Action (grant no. 03SX540D).
 
 <div align="center">
-  <img src="figures/bmwk.png" style="width:180px">
-  <img src="figures/bmbf.png" style="width:180px">
-  <br class="blank" />
-  <img src="figures/dfki.svg" style="width:180px">
-  <img src="figures/ulab.gif" style="width:180px">
+  <img src="figures/bmwk.png" width="180">
+  <img src="figures/bmbf.png" width="180">
+  <br/>
+  <img src="figures/dfki.svg" width="180">
+  <img src="figures/ulab.gif" width="180">
 </div>
 
-# License
+## License
 
 This work has been released under the BSD 3-Clause License. Details and terms of use are
 specified in the LICENSE file within this repository. Note that we do not publish
@@ -194,7 +193,7 @@ third-party software, hence software packages from other developers are released
 their very own terms and conditions. If you install third-party software packages along
 with this repo, ensure that you follow each individual license agreement.
 
-# Citation
+## Citation
 
 **INDI (IROS 2024):**
 

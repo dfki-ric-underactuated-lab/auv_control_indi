@@ -5,7 +5,6 @@ scipy
 transforms3d
 cvxpy
 drake
-pydrake
 PySide6
 pyvista
 pyvistaqt
